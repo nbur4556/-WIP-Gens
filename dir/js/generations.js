@@ -7,23 +7,28 @@ var selectedGeneration;
 var selectedNode;
 
 var genNodeColors = [
-	'#ff3399',  '#0099ff', '#99ff33', '#9966ff', '#00ff99', '#ff9933'
+    '#ff3399', '#0099ff', '#99ff33', '#9966ff', '#00ff99', '#ff9933'
 ];
 
 class GenNode {
     constructor(genNumber, nodeID, selectColor) {
         this.genNumber = genNumber;
         this.nodeID = nodeID;
-		this.nodeColor = genNodeColors[selectColor];
+        this.nodeColor = genNodeColors[selectColor];
+        this.selectColor = selectColor;
     }
 
     GetNodeID() {
         return this.nodeID;
     }
-	
-	GetNodeColor(){
-		return this.nodeColor;
-	}
+
+    GetNodeColor() {
+        return this.nodeColor;
+    }
+
+    GetSelectColor() {
+        return this.selectColor;
+    }
 
     AppendChildNode(childNode) {
         this.childNode = childNode;
@@ -54,8 +59,8 @@ class Generation {
         return this.genNodeList;
     }
 
-    AddGenNode(nodeNumber) {
-		//Generate nodeID
+    AddGenNode(nodeNumber, preSelectColor = null) {
+        //Generate nodeID
         var nodeID = "";
         var charLength = 15;
         var charList = [
@@ -68,14 +73,20 @@ class Generation {
             let setChar = Math.floor(Math.random() * charList.length);
             nodeID = nodeID + charList[setChar];
         }
-		
-		//Set node color
-		let selectColor = nodeNumber;
-		while(selectColor >= genNodeColors.length){
-			selectColor -= genNodeColors.length;
-		}
 
-		//Create and push node
+        //Set node color
+        let selectColor = nodeNumber;
+
+        if (preSelectColor == null) {
+            while (selectColor >= genNodeColors.length) {
+                selectColor -= genNodeColors.length;
+            }
+        }
+        else {
+            selectColor = preSelectColor;
+        }
+
+        //Push node
         var node = new GenNode(this.genNumber, nodeID, selectColor);
         this.genNodeList.push(node);
     }
@@ -108,18 +119,27 @@ function PopulateNewGeneration(generation) {
     var parentNodeList = generation.GetParentGen().GetGenNodeList();
 
     for (let i = 0; i < parentNodeList.length; i++) {
-        generation.AddGenNode(i);
-        let genNodeList = generation.GetGenNodeList();
+        let childCount = DetermineChildNodeCount();
+        let nodeIndex = 0;
 
-        parentNodeList[i].AppendChildNode(genNodeList[i]);
+        while (nodeIndex < childCount) {
+            generation.AddGenNode(i, parentNodeList[i].GetSelectColor());
+            let genNodeList = generation.GetGenNodeList();
+
+            parentNodeList[i].AppendChildNode(genNodeList[i]);
+            nodeIndex++;
+        }
     }
+    console.log("_______________");
+}
 
-    //console.log("Parent Node List:");
-    //console.log(parentNodeList);
-    //console.log("Child Node List:");
-    //console.log(generation.GetGenNodeList());
-    //console.log("Parent Generation");
-    //console.log(generation.GetParentGen());
+function DetermineChildNodeCount() {
+    var minChildCount = 0;
+    var maxChildCount = 3;
+
+    var childCount = Math.floor(Math.random() * (maxChildCount - minChildCount)) + minChildCount;
+    console.log(childCount);
+    return childCount;
 }
 
 function FindGenerationByNumber(genNumber) {
