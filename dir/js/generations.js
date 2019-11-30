@@ -12,6 +12,10 @@ class GenNode {
         this.nodeID = nodeID;
     }
 
+    GetNodeID() {
+        return this.nodeID;
+    }
+
     AppendChildNode(childNode) {
         this.childNode = childNode;
     }
@@ -93,12 +97,12 @@ function PopulateNewGeneration(generation) {
         parentNodeList[i].AppendChildNode(genNodeList[i]);
     }
 
-    console.log("Parent Node List:");
-    console.log(parentNodeList);
-    console.log("Child Node List:");
-    console.log(generation.GetGenNodeList());
-    console.log("Parent Generation");
-    console.log(generation.GetParentGen());
+    //console.log("Parent Node List:");
+    //console.log(parentNodeList);
+    //console.log("Child Node List:");
+    //console.log(generation.GetGenNodeList());
+    //console.log("Parent Generation");
+    //console.log(generation.GetParentGen());
 }
 
 function FindGenerationByNumber(genNumber) {
