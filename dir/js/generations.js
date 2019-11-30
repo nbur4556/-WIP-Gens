@@ -1,5 +1,7 @@
 var minFirstGenAmount = 1;
 var maxFirstGenAmount = 12;
+var minChildCount = 0;
+var maxChildCount = 3;
 
 var firstGeneration;
 var lastGeneration;
@@ -97,7 +99,7 @@ class Generation {
 }
 
 function CreateFirstGeneration(genNumber) {
-    var genNodeAmount = Math.floor(Math.random() * (maxFirstGenAmount - minFirstGenAmount)) + minFirstGenAmount;
+    var genNodeAmount = Math.floor(Math.random() * ((maxFirstGenAmount + 1) - minFirstGenAmount)) + minFirstGenAmount;
     var generation = new Generation(1);
 
     for (let i = 0; i < genNodeAmount; i++) {
@@ -134,9 +136,6 @@ function PopulateNewGeneration(generation) {
 }
 
 function DetermineChildNodeCount() {
-    var minChildCount = 0;
-    var maxChildCount = 3;
-
     var childCount = Math.floor(Math.random() * (maxChildCount - minChildCount)) + minChildCount;
     console.log(childCount);
     return childCount;
