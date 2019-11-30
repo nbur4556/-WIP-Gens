@@ -1,20 +1,29 @@
 var minFirstGenAmount = 1;
-var maxFirstGenAmount = 10;
+var maxFirstGenAmount = 12;
 
 var firstGeneration;
 var lastGeneration;
 var selectedGeneration;
 var selectedNode;
 
+var genNodeColors = [
+	'#ff3399',  '#0099ff', '#99ff33', '#9966ff', '#00ff99', '#ff9933'
+];
+
 class GenNode {
-    constructor(genNumber, nodeID) {
+    constructor(genNumber, nodeID, selectColor) {
         this.genNumber = genNumber;
         this.nodeID = nodeID;
+		this.nodeColor = genNodeColors[selectColor];
     }
 
     GetNodeID() {
         return this.nodeID;
     }
+	
+	GetNodeColor(){
+		return this.nodeColor;
+	}
 
     AppendChildNode(childNode) {
         this.childNode = childNode;
@@ -45,7 +54,8 @@ class Generation {
         return this.genNodeList;
     }
 
-    AddGenNode() {
+    AddGenNode(nodeNumber) {
+		//Generate nodeID
         var nodeID = "";
         var charLength = 15;
         var charList = [
@@ -58,8 +68,15 @@ class Generation {
             let setChar = Math.floor(Math.random() * charList.length);
             nodeID = nodeID + charList[setChar];
         }
+		
+		//Set node color
+		let selectColor = nodeNumber;
+		while(selectColor >= genNodeColors.length){
+			selectColor -= genNodeColors.length;
+		}
 
-        var node = new GenNode(this.genNumber, nodeID);
+		//Create and push node
+        var node = new GenNode(this.genNumber, nodeID, selectColor);
         this.genNodeList.push(node);
     }
 
@@ -73,7 +90,7 @@ function CreateFirstGeneration(genNumber) {
     var generation = new Generation(1);
 
     for (let i = 0; i < genNodeAmount; i++) {
-        generation.AddGenNode();
+        generation.AddGenNode(i);
     }
 
     return generation;
@@ -91,7 +108,7 @@ function PopulateNewGeneration(generation) {
     var parentNodeList = generation.GetParentGen().GetGenNodeList();
 
     for (let i = 0; i < parentNodeList.length; i++) {
-        generation.AddGenNode();
+        generation.AddGenNode(i);
         let genNodeList = generation.GetGenNodeList();
 
         parentNodeList[i].AppendChildNode(genNodeList[i]);

@@ -1,4 +1,6 @@
 var treeDisplay;
+var nodeClassName = "node";
+var genContainerClassName = "node-container";
 
 window.onload = function () {
     treeDisplay = document.getElementById("family-tree-display");
@@ -33,13 +35,26 @@ window.onload = function () {
 
 function DisplayNodes() {
     var nodes = selectedGeneration.GetGenNodeList();
+	var nodeContainer = NodeContainer();
 
     for (let i = 0; i < nodes.length; i++) {
-        let nodeContainer = document.createElement("div");
-        console.log(nodes[i]);
-        let nodeText = document.createTextNode(nodes[i].GetNodeID());
+        let node = document.createElement("div");
+        //let nodeText = document.createTextNode(nodes[i].GetNodeID());
+		let nodeColor = nodes[i].GetNodeColor();
+		
+		node.className = nodeClassName;
+		node.style.backgroundColor = nodeColor;
 
-        nodeContainer.appendChild(nodeText);
-        treeDisplay.appendChild(nodeContainer);
+        //node.appendChild(nodeText);
+        nodeContainer.appendChild(node);
     }
+	
+	treeDisplay.appendChild(nodeContainer);
+}
+
+function NodeContainer(){
+	var nodeContainer = document.createElement("div");
+	nodeContainer.className = genContainerClassName;
+	
+	return nodeContainer;
 }
