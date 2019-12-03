@@ -60,6 +60,7 @@ function DisplayNodes() {
     }
 
     treeDisplay.appendChild(nodeContainer);
+	ScrollToBottom();
 }
 
 //Create container for all nodes in a generation
@@ -75,4 +76,8 @@ function ClearTreeDisplay() {
     while (treeDisplay.firstChild) {
         treeDisplay.removeChild(treeDisplay.firstChild);
     }
+}
+
+function ScrollToBottom(){
+	window.scrollTo(0,document.body.scrollHeight);
 }

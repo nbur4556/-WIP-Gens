@@ -13,3 +13,8 @@
 	border-radius: 50%;
 }
 
+.buttons{
+	position: fixed;
+	background-color: red;
+}
+
